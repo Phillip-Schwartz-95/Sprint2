@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Generator</title>
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body onload="onInit()">
+    <header>
+        <h1 class="title">Meme Generator</h1>
+    </header>
+
+    <main>
+       
+        <section class="image-gallery">
+            <h2 class="section-title">Choose an Image</h2>
+            <div class="gallery-container">
+                
+            </div>
+        </section>
+
+        <section class="meme-editor hidden">
+            <h2 class="section-title">Edit Your Meme</h2>
+            <canvas class="meme-canvas"></canvas>
+            <input type="text" class="meme-text" placeholder="Enter meme text" oninput="onTextChange()">
+            <button class="btn-download" onclick="onDownloadMeme()">Download Meme</button>
+        </section>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+
+</html>
+
