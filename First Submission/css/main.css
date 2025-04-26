@@ -1,0 +1,7 @@
+.hidden {
+    display: none; /* Completely hides the element */
+}
+
+.show {
+    display: grid; /* Ensures the element is visible */
+}
