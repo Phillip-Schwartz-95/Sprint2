@@ -9,8 +9,15 @@
 </head>
 
 <body onload="onInit()">
-    <header>
-        <h1 class="title">Meme Generator</h1>
+    <header class="main-header">
+        <img src="img/logo.png" alt="Meme Generator Logo" class="logo" onclick="showGallery()">
+        
+        <nav class="nav-links">
+            <a href="#" onclick="toggleEditor(false)">Gallery</a>
+            <a href="#" onclick="toggleEditor(true)">Editor</a>
+            <a href="#" onclick="showMemes()">Memes</a>
+            <a href="#" onclick="showAbout()">About</a>
+        </nav>
     </header>
 
     <main>
@@ -28,8 +35,9 @@
             <input type="text" class="meme-text" placeholder="Enter meme text" oninput="onLineTxtChange()">
             <label for="text-color-picker">Select Text Color:</label>
             <input type="color" class="text-color-picker" oninput="onSetColor()">
-            <button onclick="onIncreaseFontSize()">➕ Increase Font</button>
-            <button onclick="onDecreaseFontSize()">➖ Decrease Font</button>
+            <label for="font-size-meter">Adjust Font Size:</label>
+            <input type="range" id="font-size-meter" min="10" max="100" value="20" oninput="onFontSizeChange()">
+
 
             <a class="btn-download" href="#" onclick="onDownloadMeme(this)" download="meme.jpg">Download Meme</a>
             <button class="btn-back" onclick="toggleEditor(false)">Back to Gallery</button>

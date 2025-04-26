@@ -76,12 +76,10 @@ function onSetColor() {
     })
 }
 
-function onIncreaseFontSize() {
-    changeFontSize(2) // Increase font size
-    renderMeme() // Re-render canvas
+function onFontSizeChange() {
+    const fontSize = document.querySelector('#font-size-meter').value
+    
+    setFontSize(Number(fontSize)) // Update font size in gMeme
+    renderMeme() 
 }
 
-function onDecreaseFontSize() {
-    changeFontSize(-2) // Decrease
-    renderMeme()
-}

@@ -48,6 +48,6 @@ function setColor(color) {
     gMeme.lines[gMeme.selectedLineIdx].color = color
 }
 
-function changeFontSize(diff) {
-    gMeme.lines[gMeme.selectedLineIdx].size += diff // Increase and decrease font size
+function setFontSize(size) {
+    gMeme.lines[gMeme.selectedLineIdx].size = size // Increase and decrease font size
 }
