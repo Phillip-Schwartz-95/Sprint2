@@ -61,3 +61,27 @@ function onDownloadMeme(elLink) {
     elLink.href = imgContent // Set the href of the link to the image URL
     elLink.download = "meme.jpg" //download attribute
 }
+
+function onSetColor() {
+    const colorInput = document.querySelector('.text-color-picker').value 
+    setColor(colorInput) 
+    
+    //change font color without re-rendering image
+    const meme = getMeme()
+    meme.lines.forEach((line, idx) => {
+        gCtx.fillStyle = line.color
+        gCtx.font = `${line.size}px Arial`
+        gCtx.textAlign = 'center'
+        gCtx.fillText(line.txt, gElCanvas.width / 2, (idx + 1) * 50)
+    })
+}
+
+function onIncreaseFontSize() {
+    changeFontSize(2) // Increase font size
+    renderMeme() // Re-render canvas
+}
+
+function onDecreaseFontSize() {
+    changeFontSize(-2) // Decrease
+    renderMeme()
+}

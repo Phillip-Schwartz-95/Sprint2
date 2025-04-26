@@ -14,11 +14,11 @@
     </header>
 
     <main>
-       
+
         <section class="image-gallery">
             <h2 class="section-title">Choose an Image</h2>
             <div class="gallery-container">
-                
+
             </div>
         </section>
 
@@ -26,7 +26,11 @@
             <h2 class="section-title">Edit Your Meme</h2>
             <canvas class="meme-canvas"></canvas>
             <input type="text" class="meme-text" placeholder="Enter meme text" oninput="onLineTxtChange()">
-            <input type="color" class="text-color-picker" onchange="onSetColor()">
+            <label for="text-color-picker">Select Text Color:</label>
+            <input type="color" class="text-color-picker" oninput="onSetColor()">
+            <button onclick="onIncreaseFontSize()">➕ Increase Font</button>
+            <button onclick="onDecreaseFontSize()">➖ Decrease Font</button>
+
             <a class="btn-download" href="#" onclick="onDownloadMeme(this)" download="meme.jpg">Download Meme</a>
             <button class="btn-back" onclick="toggleEditor(false)">Back to Gallery</button>
 
@@ -37,8 +41,7 @@
     <script src="js/gallery-controller.js"></script>
     <script src="js/meme-service.js"></script>
     <script src="js/meme-controller.js"></script>
-    
+
 </body>
 
 </html>
-

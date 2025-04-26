@@ -43,3 +43,11 @@ function getImgs() {
 function setImg(imgId) {
     gMeme.selectedImgId = imgId 
 }
+
+function setColor(color) {
+    gMeme.lines[gMeme.selectedLineIdx].color = color
+}
+
+function changeFontSize(diff) {
+    gMeme.lines[gMeme.selectedLineIdx].size += diff // Increase and decrease font size
+}
