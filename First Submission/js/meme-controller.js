@@ -23,13 +23,19 @@ function renderMeme() {
 
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
 
-        // Draw all text lines from gMeme
+        // All text lines from gMeme
         meme.lines.forEach((line, idx) => {
             gCtx.font = `${line.size}px Arial`
             gCtx.fillStyle = line.color
             gCtx.textAlign = 'center'
+            gCtx.fillText(line.txt, line.x, line.y)
 
-            gCtx.fillText(line.txt, gElCanvas.width / 2, (idx + 1) * 50) // Position text dynamically
+            //highlight selected text with frame
+            if (idx === meme.selectedLineIdx) {
+                gCtx.strokeStyle = 'white'
+                gCtx.linewidth = 2
+                gCtx.strokeRect(line.x - 100, line.y - 20, 200, 40) //rectangle shape
+            }
         })
     }
 }
@@ -83,3 +89,19 @@ function onFontSizeChange() {
     renderMeme() 
 }
 
+function onAddLine() {
+    gMeme.lines.push({
+        txt: 'New Line',
+        size: 20,
+        color: 'black',
+        x: 150,
+        y: gMeme.lines.length * 60
+    })
+
+    renderMeme()
+}
+
+function onSwitchLine() {
+    gMeme.selectedLineIdx = (gMeme.selectedLineIdx + 1) % gMeme.lines.length // Cycle through lines
+    renderMeme()
+}
