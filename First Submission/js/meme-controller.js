@@ -7,8 +7,27 @@ function onInit() {
     gElCanvas = document.querySelector('.meme-canvas')
     gCtx = gElCanvas.getContext('2d')
 
-    renderGallery()
-    renderMeme()
+    const imgObj = getImageById(gMeme.selectedImgId);
+    if (!imgObj) {
+        renderGallery()
+        renderMeme()
+        return
+    }
+
+    //Format aspect ratio of photo on canvas
+    const img = new Image()
+    img.src = imgObj.url
+
+    img.onload = () => {
+        const canvasWidth = 400 // chosen width
+        const canvasHeight = (img.naturalHeight * canvasWidth) / img.naturalWidth // Aspect ratio formula
+
+        gElCanvas.width = canvasWidth
+        gElCanvas.height = canvasHeight
+
+        renderGallery()
+        renderMeme()
+    }
 }
 
 function renderMeme() {
@@ -42,24 +61,24 @@ function renderMeme() {
 
 function onLineTxtChange() {
     const textInput = document.querySelector('.meme-text').value
-    
+
     setLineTxt(textInput) // Update meme text
     renderMeme() // Re-render the meme
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     window.toggleEditor = function (showEditor) {
-    const gallery = document.querySelector('.image-gallery')
-    const editor = document.querySelector('.meme-editor')
+        const gallery = document.querySelector('.image-gallery')
+        const editor = document.querySelector('.meme-editor')
 
-    if (showEditor) {
-        gallery.classList.add('hidden')
-        editor.classList.remove('hidden')
-    } else {
-        gallery.classList.remove('hidden')
-        editor.classList.add('hidden')
+        if (showEditor) {
+            gallery.classList.add('hidden')
+            editor.classList.remove('hidden')
+        } else {
+            gallery.classList.remove('hidden')
+            editor.classList.add('hidden')
+        }
     }
-}
 })
 
 function onDownloadMeme(elLink) {
@@ -69,9 +88,9 @@ function onDownloadMeme(elLink) {
 }
 
 function onSetColor() {
-    const colorInput = document.querySelector('.text-color-picker').value 
-    setColor(colorInput) 
-    
+    const colorInput = document.querySelector('.text-color-picker').value
+    setColor(colorInput)
+
     //change font color without re-rendering image
     const meme = getMeme()
     meme.lines.forEach((line, idx) => {
@@ -84,18 +103,21 @@ function onSetColor() {
 
 function onFontSizeChange() {
     const fontSize = document.querySelector('#font-size-meter').value
-    
+
     setFontSize(Number(fontSize)) // Update font size in gMeme
-    renderMeme() 
+    renderMeme()
 }
 
 function onAddLine() {
+    const lastLine= gMeme.lines[gMeme.lines.length-1]
+    const newY = lastLine.y + 60
+    
     gMeme.lines.push({
         txt: 'New Line',
         size: 20,
         color: 'black',
-        x: 150,
-        y: gMeme.lines.length * 60
+        x: 200,
+        y: newY
     })
 
     renderMeme()

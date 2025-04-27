@@ -13,15 +13,15 @@ var gMeme = {
             txt: 'Enter Text Here',
             size: 20,
             color: 'red',
-            x: 150,
-            y: 20
+            x: 200,
+            y: 30
         },
         {
             txt: 'Second Line Here',
             size: 20,
             color: 'blue',
-            x: 150,
-            y: 80
+            x: 200,
+            y: 90
         }
     ]
 }
