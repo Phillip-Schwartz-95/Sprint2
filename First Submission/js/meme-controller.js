@@ -45,6 +45,13 @@ function renderMeme() {
         // All text lines from gMeme
         meme.lines.forEach((line, idx) => {
             gCtx.font = `${line.size}px Arial`
+            const textMeasure = gCtx.measureText(line.txt)
+
+            // update line object width and height
+            line.width = textMeasure.width
+            line.height = textMeasure.actualBoundingBoxAscent + textMeasure.actualBoundingBoxDescent // measures height of text
+
+            // drawing text
             gCtx.fillStyle = line.color
             gCtx.textAlign = 'center'
             gCtx.fillText(line.txt, line.x, line.y)
@@ -111,7 +118,7 @@ function onFontSizeChange() {
 function onAddLine() {
     const lastLine= gMeme.lines[gMeme.lines.length-1]
     const newY = lastLine.y + 60
-    
+
     gMeme.lines.push({
         txt: 'New Line',
         size: 20,
@@ -126,4 +133,37 @@ function onAddLine() {
 function onSwitchLine() {
     gMeme.selectedLineIdx = (gMeme.selectedLineIdx + 1) % gMeme.lines.length // Cycle through lines
     renderMeme()
+}
+
+function updateEditor(line) {
+    document.querySelector('.meme-text').value = line.txt
+    document.querySelector('.text-color-picker').value = line.color
+    document.querySelector('#font-size-meter').value = line.size
+}
+
+
+function onCanvasClick(ev) {
+    const { offsetX, offsetY } = getEvPos(ev) // Adjust click position
+
+    gMeme.lines.forEach((line, idx) => {
+        if (
+            offsetX >= line.x - line.width / 2 &&
+            offsetX <= line.x + line.width / 2 &&
+            offsetY >= line.y - line.height / 2 &&
+            offsetY <= line.y + line.height / 2
+        ) {
+            gMeme.selectedLineIdx = idx // Select the clicked line
+            updateEditor(line) // Update editor input
+            renderMeme() // Refresh canvas
+            console.log('Line clicked')
+        }
+    })
+}
+
+function getEvPos(ev) {
+    const rect = gElCanvas.getBoundingClientRect()
+    return {
+        x: ev.clientX - rect.left,
+        y: ev.clientY - rect.top
+    }
 }

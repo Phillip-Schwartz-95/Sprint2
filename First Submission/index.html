@@ -31,7 +31,7 @@
 
         <section class="meme-editor hidden">
             <h2 class="section-title">Edit Your Meme</h2>
-            <canvas class="meme-canvas"></canvas>
+            <canvas class="meme-canvas" onclick="onCanvasClick(event)"></canvas>
             <input type="text" class="meme-text" placeholder="Enter meme text" oninput="onLineTxtChange()">
             <label for="text-color-picker">Select Text Color:</label>
             <input type="color" class="text-color-picker" oninput="onSetColor()">

@@ -14,14 +14,18 @@ var gMeme = {
             size: 20,
             color: 'red',
             x: 200,
-            y: 30
+            y: 30,
+            width: 0, // Will be measured and updated in renderMeme() function
+            height: 0
         },
         {
             txt: 'Second Line Here',
             size: 20,
             color: 'blue',
             x: 200,
-            y: 90
+            y: 90,
+            width: 0,
+            height: 0
         }
     ]
 }
