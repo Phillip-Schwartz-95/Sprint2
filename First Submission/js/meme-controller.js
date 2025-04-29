@@ -7,6 +7,9 @@ function onInit() {
     gElCanvas = document.querySelector('.meme-canvas')
     gCtx = gElCanvas.getContext('2d')
 
+    // Add click event listener to canvas
+    gElCanvas.addEventListener('click', onCanvasClick)
+
     const imgObj = getImageById(gMeme.selectedImgId);
     if (!imgObj) {
         renderGallery()
@@ -31,36 +34,43 @@ function onInit() {
 }
 
 function renderMeme() {
-    const meme = getMeme() // Retrieve from memeService
-
+    const meme = getMeme()
     const img = new Image()
     img.src = getImageById(meme.selectedImgId).url
 
     img.onload = () => {
-        // Clear canvas before render
         gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
-
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
 
-        // All text lines from gMeme
         meme.lines.forEach((line, idx) => {
             gCtx.font = `${line.size}px Arial`
-            const textMeasure = gCtx.measureText(line.txt)
-
-            // update line object width and height
-            line.width = textMeasure.width
-            line.height = textMeasure.actualBoundingBoxAscent + textMeasure.actualBoundingBoxDescent // measures height of text
-
-            // drawing text
-            gCtx.fillStyle = line.color
             gCtx.textAlign = 'center'
+            gCtx.textBaseline = 'middle'
+            gCtx.fillStyle = line.color
+
+            // Measure text
+            const textMetrics = gCtx.measureText(line.txt)
+            const textWidth = textMetrics.width
+            const textHeight = line.size
+
+            // Update stored dimensions (in object)
+            line.width = textWidth
+            line.height = textHeight
+
+            // Draw text
             gCtx.fillText(line.txt, line.x, line.y)
 
-            //highlight selected text with frame
-            if (idx === meme.selectedLineIdx) {
+            // If selected, draw a white highlight (existing code, like switch line function)
+            if (idx === gMeme.selectedLineIdx) {
                 gCtx.strokeStyle = 'white'
-                gCtx.linewidth = 2
-                gCtx.strokeRect(line.x - 100, line.y - 20, 200, 40) //rectangle shape
+                gCtx.lineWidth = 2
+                const padding = 10
+                gCtx.strokeRect(
+                    line.x - (textWidth / 2) - padding,
+                    line.y - (textHeight / 2) - padding,
+                    textWidth + padding * 2,
+                    textHeight + padding * 2
+                )
             }
         })
     }
@@ -116,7 +126,7 @@ function onFontSizeChange() {
 }
 
 function onAddLine() {
-    const lastLine= gMeme.lines[gMeme.lines.length-1]
+    const lastLine = gMeme.lines[gMeme.lines.length - 1]
     const newY = lastLine.y + 60
 
     gMeme.lines.push({
@@ -141,29 +151,95 @@ function updateEditor(line) {
     document.querySelector('#font-size-meter').value = line.size
 }
 
-
 function onCanvasClick(ev) {
-    const { offsetX, offsetY } = getEvPos(ev) // Adjust click position
+    ev.preventDefault() // Prevent any default behavior
+
+    // Get the canvas's bounding rectangle
+    const getEvPos = (ev) => {
+        const rect = gElCanvas.getBoundingClientRect()
+        // Helper to convert event coordinates to canvas coordinates
+        const scaleX = gElCanvas.width / rect.width
+        const scaleY = gElCanvas.height / rect.height
+        return {
+          x: (ev.clientX - rect.left) * scaleX,
+          y: (ev.clientY - rect.top) * scaleY,
+        }
+      }
+
+    const pos = getEvPos(ev)
+    console.log('Canvas clicked at (scaled):', pos)
 
     gMeme.lines.forEach((line, idx) => {
-        if (
-            offsetX >= line.x - line.width / 2 &&
-            offsetX <= line.x + line.width / 2 &&
-            offsetY >= line.y - line.height / 2 &&
-            offsetY <= line.y + line.height / 2
-        ) {
-            gMeme.selectedLineIdx = idx // Select the clicked line
-            updateEditor(line) // Update editor input
-            renderMeme() // Refresh canvas
-            console.log('Line clicked')
+        // Set font size so measurements are accurate.
+        gCtx.font = `${line.size}px Arial`
+        const textMetrics = gCtx.measureText(line.txt)
+
+        // Use line.size for approx text height
+        const textHeight = line.size
+        const textWidth = textMetrics.width;
+
+        // Calculate the clickable area with padding
+        const padding = 10
+        const bounds = {
+            left: line.x - (textWidth / 2) - padding,
+            right: line.x + (textWidth / 2) + padding,
+            top: line.y - (textHeight / 2) - padding,
+            bottom: line.y + (textHeight / 2) + padding
+        }
+
+        console.log(`Checking line ${idx}:`, {
+            text: line.txt,
+            position: `(${line.x}, ${line.y})`,
+            bounds: bounds,
+            clickPos: pos
+        })
+
+        const isInBounds =
+            pos.x >= bounds.left &&
+            pos.x <= bounds.right &&
+            pos.y >= bounds.top &&
+            pos.y <= bounds.bottom;
+
+        console.log(`Line ${idx} clicked:`, isInBounds)
+
+        if (isInBounds) {
+            console.log(`✅ Selected line ${idx}: "${line.txt}"`)
+            gMeme.selectedLineIdx = idx
+            updateEditor(line)
+            renderMeme()
         }
     })
 }
 
+//for handling touch vs. click events
 function getEvPos(ev) {
+    // Get the canvas's bounding rectangle
     const rect = gElCanvas.getBoundingClientRect()
-    return {
-        x: ev.clientX - rect.left,
-        y: ev.clientY - rect.top
+    // Calculate scale factors to convert CSS coordinates to canvas
+    const scaleX = gElCanvas.width / rect.width
+    const scaleY = gElCanvas.height / rect.height
+
+    let pos
+
+    // Check if this is a touch event
+    if (ev.type.startsWith('touch')) {
+        // Prevent default behavior 
+        ev.preventDefault()
+        // Use the first touch point
+        const touch = ev.changedTouches[0]
+        pos = {
+            x: (touch.clientX - rect.left) * scaleX,
+            y: (touch.clientY - rect.top) * scaleY
+        }
+    } else {
+        // else it's a mouse event
+        pos = {
+            x: (ev.clientX - rect.left) * scaleX,
+            y: (ev.clientY - rect.top) * scaleY
+        }
     }
+
+    console.log(`getEvPos - X: ${pos.x}, Y: ${pos.y}`)
+    return pos
 }
+

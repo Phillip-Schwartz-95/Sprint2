@@ -13,22 +13,23 @@ var gMeme = {
             txt: 'Enter Text Here',
             size: 20,
             color: 'red',
-            x: 200,
-            y: 30,
-            width: 0, // Will be measured and updated in renderMeme() function
-            height: 0
+            x: 200,  // Make sure these coordinates
+            y: 50,   // match your canvas layout
+            width: 0,  // These will be calculated
+            height: 0  // during rendering
         },
         {
             txt: 'Second Line Here',
             size: 20,
             color: 'blue',
             x: 200,
-            y: 90,
+            y: 150,
             width: 0,
             height: 0
         }
     ]
 }
+
 
 var gKeywordSearchCountMap = { 'funny': 1, 'cute': 2, 'baby': 1 }
 
