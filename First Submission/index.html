@@ -11,7 +11,7 @@
 <body onload="onInit()">
     <header class="main-header">
         <img src="img/logo.png" alt="Meme Generator Logo" class="logo" onclick="showGallery()">
-        
+
         <nav class="nav-links">
             <a href="#" onclick="toggleEditor(false)">Gallery</a>
             <a href="#" onclick="toggleEditor(true)">Editor</a>
@@ -31,21 +31,24 @@
 
         <section class="meme-editor hidden">
             <h2 class="section-title">Edit Your Meme</h2>
-            <canvas class="meme-canvas"></canvas>
-            <input type="text" class="meme-text" placeholder="Enter meme text" oninput="onLineTxtChange()">
-            <label for="text-color-picker">Select Text Color:</label>
-            <input type="color" class="text-color-picker" oninput="onSetColor()">
-            <label for="font-size-meter">Adjust Font Size:</label>
-            <input type="range" id="font-size-meter" min="10" max="100" value="20" oninput="onFontSizeChange()">
+            <div class="editor-container">
+                <canvas class="meme-canvas"></canvas>
+                <div class="editor-controls">
+                    <input type="text" class="meme-text" placeholder="Enter meme text" oninput="onLineTxtChange()">
+                    <label for="text-color-picker" class="color-label">Select Text Color:</label>
+                    <input type="color" class="text-color-picker" oninput="onSetColor()">
+                    <label for="font-size-meter" class="size-label">Adjust Font Size:</label>
+                    <input type="range" id="font-size-meter" min="10" max="100" value="20" oninput="onFontSizeChange()">
 
-            <button onclick="onAddLine()">➕ Add Line</button>
-            <button onclick="onSwitchLine()">🔄 Switch Line</button>
+                    <button onclick="onAddLine()">➕ Add Line</button>
+                    <button onclick="onSwitchLine()">🔄 Switch Line</button>
 
+                    <button class="btn-back" onclick="toggleEditor(false)">Back to Gallery</button>
+                    <a class="btn-download" href="#" onclick="onDownloadMeme(this)" download="meme.jpg">Download
+                        Meme</a>
+                </div>
 
-
-            <a class="btn-download" href="#" onclick="onDownloadMeme(this)" download="meme.jpg">Download Meme</a>
-            <button class="btn-back" onclick="toggleEditor(false)">Back to Gallery</button>
-
+            </div>
         </section>
     </main>
 
