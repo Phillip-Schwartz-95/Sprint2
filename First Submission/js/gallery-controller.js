@@ -1,6 +1,7 @@
 'use strict'
 
 function renderGallery() {
+    document.querySelector('.user-memes').classList.add('hidden')
     const imgs = getImgs() // images from memeService
     const galleryContainer = document.querySelector('.gallery-container')
 
