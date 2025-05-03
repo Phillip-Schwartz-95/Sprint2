@@ -36,7 +36,13 @@ function onInit() {
 function renderMeme() {
     const meme = getMeme()
     const img = new Image()
-    img.src = getImageById(meme.selectedImgId).url
+
+    // if image is not from default list, use the uploaded image
+    if (meme.selectedImgUrl !== null && meme.selectedImgUrl !== undefined && meme.selectedImgUrl !== '') {
+        img.src = meme.selectedImgUrl
+    } else {
+        img.src = getImageById(meme.selectedImgId).url
+    }    
 
     img.onload = () => {
         gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
@@ -46,7 +52,7 @@ function renderMeme() {
             gCtx.font = `${line.size}px ${line.selectedFont}`
 
             // Use the selected line's alignment if defined, otherwise default to center
-            let align = 'center';
+            let align = 'center'
             if (idx === gMeme.selectedLineIdx && line.textAlign) {
                 align = line.textAlign
             }
@@ -71,18 +77,18 @@ function renderMeme() {
                 gCtx.strokeStyle = 'white'
                 gCtx.lineWidth = 2
                 const padding = 10
-                let rectX;
+                let rectX
                 // Calculate the x offset based on the alignment:
                 if (gCtx.textAlign === 'left') {
                     rectX = line.x - padding;
                 } else if (gCtx.textAlign === 'center') {
-                    rectX = line.x - textWidth / 2 - padding;
+                    rectX = line.x - textWidth / 2 - padding
                 } else if (gCtx.textAlign === 'right') {
-                    rectX = line.x - textWidth - padding;
+                    rectX = line.x - textWidth - padding
                 }
-                const rectY = line.y - textHeight / 2 - padding;
-                const rectWidth = textWidth + padding * 2;
-                const rectHeight = textHeight + padding * 2;
+                const rectY = line.y - textHeight / 2 - padding
+                const rectWidth = textWidth + padding * 2
+                const rectHeight = textHeight + padding * 2
                 gCtx.strokeRect(rectX, rectY, rectWidth, rectHeight)
 
             }
@@ -148,7 +154,7 @@ function onAddLine() {
     gMeme.lines.push({
         txt: 'New Line',
         size: 20,
-        color: 'black',
+        color: 'white',
         x: 200,
         y: newY
     })
@@ -297,4 +303,89 @@ function showMemes() {
 
     // Render memes from local storage into saved memes container
     renderSavedMemes()
+}
+
+function onLoadRandomPicture() {
+
+    const images = getImgs()
+    const randomIdx = Math.floor(Math.random() * images.length)
+    const randomImg = images[randomIdx]
+
+    // Update your global meme data:
+    gMeme.selectedImgId = randomImg.id
+    // (do not include user-uploaded image)
+    gMeme.selectedImgUrl = null
+
+    // default line
+    gMeme.lines = [{
+        txt: 'Your Meme Text Here',
+        size: 20,
+        color: 'white',
+        x: 200,
+        y: 50,
+        width: 0,
+        height: 0
+    }]
+
+    // Switch to editor view and render meme
+    toggleEditor(true)
+    renderMeme()
+}
+
+function onUploadPicture(ev) {
+    const reader = new FileReader()
+    reader.onload = function (event) {
+        const imgData = event.target.result
+
+        // Update the global meme object with the uploaded image.
+        // user image has noimage id.
+        gMeme.selectedImgId = null
+        gMeme.selectedImgUrl = imgData
+
+        // Set one default line of text
+        gMeme.lines = [{
+            txt: 'Your Meme Text Here',
+            size: 30,
+            color: 'white',
+            x: 200,
+            y: 50,
+            width: 0,
+            height: 0
+        }]
+
+        // Switch to the editor view and render the meme.
+        toggleEditor(true)
+        renderMeme()
+    }
+    reader.readAsDataURL(ev.target.files[0])
+}
+
+function onDeleteLine() {
+    // Check if theres line to delete
+    if (gMeme.lines.length === 0) return
+
+    // Remove the line at selected index
+    gMeme.lines.splice(gMeme.selectedLineIdx, 1)
+
+    // Adjust the selected line index:
+    // If there are still lines remaining, ensure the index is correct.
+    if (gMeme.selectedLineIdx >= gMeme.lines.length) {
+        gMeme.selectedLineIdx = gMeme.lines.length - 1
+    }
+
+    // Optional: If no lines are left, you could add a default empty line:
+    if (gMeme.lines.length === 0) {
+        gMeme.lines.push({
+            txt: 'Enter text here',
+            size: 20,
+            color: 'white',
+            x: 200,
+            y: 50,
+            width: 0,
+            height: 0
+        })
+        gMeme.selectedLineIdx = 0
+    }
+
+    renderMeme()
 }

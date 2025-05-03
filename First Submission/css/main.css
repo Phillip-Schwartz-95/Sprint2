@@ -80,6 +80,27 @@ main {
     padding: 0 20px;
 }
 
+.btn-random, 
+.btn-upload {
+    display: inline-block;
+    margin: 20px 0;
+    background-color: #3498db;   
+    color: #fff;                 
+    padding: 10px 20px;          
+    border-radius: 3px;          
+    text-align: center;          
+    font-size: 1rem;             
+    text-decoration: none;       
+    border: none;                
+    cursor: pointer;             
+    transition: background-color 0.3s ease;
+}
+
+.btn-random:hover, 
+.btn-upload:hover {
+    background-color: #2980b9;
+}
+
 .gallery-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 240px));

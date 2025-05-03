@@ -30,9 +30,18 @@
 
         <section class="image-gallery">
             <h2 class="section-title">Choose an Image</h2>
-            <div class="gallery-container">
 
-            </div>
+            <div class="gallery-actions">
+                <button class="btn-random" onclick="onLoadRandomPicture()">Random Meme</button>
+                <label class="btn-upload" for="uploadImg">
+                    <i class="fas fa-upload"></i> Upload Picture
+                </label>
+                <input id="uploadImg" type="file" accept="image/*" onchange="onUploadPicture(event)"
+                    style="display: none;">
+
+                <div class="gallery-container">
+                    <!-- gallery images loaded -->
+                </div>
         </section>
 
         <section class="meme-editor hidden">
@@ -85,6 +94,7 @@
                     <!-- Row 5: Action Buttons -->
                     <button class="btn-add" onclick="onAddLine()">➕ Add Line</button>
                     <button class="btn-switch" onclick="onSwitchLine()">🔄 Switch Line</button>
+                    <button class="btn-delete" onclick="onDeleteLine()">✖ Delete Selected Line</button>
                     <button class="btn-download" onclick="onDownloadMeme(this)" download="meme.jpg">
                         <i class="fas fa-download"></i> Download Meme
                     </button>
