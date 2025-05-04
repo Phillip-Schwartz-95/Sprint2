@@ -167,6 +167,7 @@ function onSwitchLine() {
     renderMeme()
 }
 
+//update the DOM of selected line
 function updateEditor(line) {
     document.querySelector('.meme-text').value = line.txt
     document.querySelector('.text-color-picker').value = line.color
