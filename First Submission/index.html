@@ -48,7 +48,9 @@
         <section class="meme-editor hidden">
             <h2 class="section-title">Edit Your Meme</h2>
             <div class="editor-container">
-                <canvas class="meme-canvas"></canvas>
+                <canvas class="meme-canvas" onmousedown="onCanvasClick(event)" onmousemove="onMove(event)"
+                    onmouseup="onUp()" ontouchstart="onCanvasClick(event)" ontouchmove="onMove(event)"
+                    ontouchend="onUp()"></canvas>
                 <div class="editor-controls">
                     <!-- Row 1: Meme Text Input -->
                     <div class="control-row">
@@ -69,6 +71,20 @@
                         <label for="font-size-meter" class="size-label">Adjust Font Size:</label>
                         <input type="range" id="font-size-meter" min="10" max="100" value="20"
                             oninput="onFontSizeChange()">
+                    </div>
+
+                    <div class="control-row">
+                        <label for="sticker-select">Add Sticker:</label>
+                        <select id="sticker-select" onchange="onSelectSticker(this.value)">
+                            <option value="" disabled selected>See Stickers 😄</option>
+                            <option value="😂">😂</option>
+                            <option value="🔥">🔥</option>
+                            <option value="😎">😎</option>
+                            <option value="💯">💯</option>
+                            <option value="👀">👀</option>
+                            <option value="🤡">🤡</option>
+                            <option value="🐶">🐶</option>
+                        </select>
                     </div>
 
                     <!-- Row 4: Font Family & Alignment -->
@@ -98,10 +114,12 @@
                     </div>
 
                     <!-- Row 5: Action Buttons -->
-                    <div class="control-row action-buttons">
+                    <div class="control-row">
                         <button class="btn-add" onclick="onAddLine()">➕ Add Line</button>
                         <button class="btn-switch" onclick="onSwitchLine()">🔄 Switch Line</button>
                         <button class="btn-delete" onclick="onDeleteLine()">✖ Delete Selected Line</button>
+                    </div>
+                    <div class="action-buttons">
                         <button class="btn-download" onclick="onDownloadMeme(this)" download="meme.jpg">
                             <i class="fas fa-download"></i> Download Meme
                         </button>

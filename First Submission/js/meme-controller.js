@@ -2,13 +2,12 @@
 
 var gElCanvas
 var gCtx
+var gStartPos = { x: 0, y: 0 }
+
 
 function onInit() {
     gElCanvas = document.querySelector('.meme-canvas')
     gCtx = gElCanvas.getContext('2d')
-
-    // Add click event listener to canvas
-    gElCanvas.addEventListener('click', onCanvasClick)
 
     const imgObj = getImageById(gMeme.selectedImgId);
     if (!imgObj) {
@@ -42,14 +41,15 @@ function renderMeme() {
         img.src = meme.selectedImgUrl
     } else {
         img.src = getImageById(meme.selectedImgId).url
-    }    
+    }
 
     img.onload = () => {
         gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
         gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
 
         meme.lines.forEach((line, idx) => {
-            gCtx.font = `${line.size}px ${line.selectedFont}`
+            const font = line.isSticker ? `${line.size}px Arial` : `${line.size}px ${line.selectedFont || gMeme.selectedFont}`
+            gCtx.font = font
 
             // Use the selected line's alignment if defined, otherwise default to center
             let align = 'center'
@@ -148,15 +148,36 @@ function onFontSizeChange() {
 }
 
 function onAddLine() {
-    const lastLine = gMeme.lines[gMeme.lines.length - 1]
-    const newY = lastLine.y + 60
+
+    if (gMeme.lines.length >= 5) {
+        alert('You can only add up to 5 lines or stickers.')
+        return
+    }
+
+    // Find the last text line (non-sticker)
+    const textLines = gMeme.lines.filter(line => !line.isSticker)
+    const lastLine = textLines[textLines.length - 1]
+    const newY = lastLine ? lastLine.y + 60 : 50
+
+    // prevent from being added off screen
+    let x = 200
+    let y = newY
+
+    if (x < 0) x = 0
+    else if (x > gElCanvas.width) x = gElCanvas.width
+
+    if (y < 0) y = 0
+    else if (y > gElCanvas.height) y = gElCanvas.height
 
     gMeme.lines.push({
         txt: 'New Line',
         size: 20,
         color: 'white',
-        x: 200,
-        y: newY
+        x,
+        y,
+        width: 0,
+        height: 0,
+        isSticker: false
     })
 
     renderMeme()
@@ -174,23 +195,14 @@ function updateEditor(line) {
     document.querySelector('#font-size-meter').value = line.size
 }
 
+
 function onCanvasClick(ev) {
     ev.preventDefault() // Prevent any default behavior
 
-    // Get the canvas's bounding rectangle
-    const getEvPos = (ev) => {
-        const rect = gElCanvas.getBoundingClientRect()
-        // Helper to convert event coordinates to canvas coordinates
-        const scaleX = gElCanvas.width / rect.width
-        const scaleY = gElCanvas.height / rect.height
-        return {
-            x: (ev.clientX - rect.left) * scaleX,
-            y: (ev.clientY - rect.top) * scaleY,
-        }
-    }
-
     const pos = getEvPos(ev)
-    console.log('Canvas clicked at (scaled):', pos)
+
+
+    let isLineClicked = false
 
     gMeme.lines.forEach((line, idx) => {
         // Set font size so measurements are accurate.
@@ -199,7 +211,7 @@ function onCanvasClick(ev) {
 
         // Use line.size for approx text height
         const textHeight = line.size
-        const textWidth = textMetrics.width;
+        const textWidth = textMetrics.width
 
         // Calculate the clickable area with padding
         const padding = 10
@@ -217,21 +229,53 @@ function onCanvasClick(ev) {
             clickPos: pos
         })
 
-        const isInBounds =
-            pos.x >= bounds.left &&
-            pos.x <= bounds.right &&
-            pos.y >= bounds.top &&
-            pos.y <= bounds.bottom;
+        if (pos.x >= bounds.left && pos.x <= bounds.right &&
+            pos.y >= bounds.top && pos.y <= bounds.bottom) {
 
-        console.log(`Line ${idx} clicked:`, isInBounds)
-
-        if (isInBounds) {
-            console.log(`✅ Selected line ${idx}: "${line.txt}"`)
             gMeme.selectedLineIdx = idx
-            updateEditor(line)
-            renderMeme()
+            gMeme.isDragging = true // dragging
+            gStartPos = pos
+            isLineClicked = true
         }
     })
+    if (!isLineClicked) {
+        gMeme.selectedLineIdx = null
+        gMeme.isDragging = false
+    }
+}
+
+function onMove(ev) {
+
+    if (!gMeme.isDragging)
+        return
+
+    if (gMeme.selectedLineIdx === null)
+        return
+
+    const pos = getEvPos(ev)
+    const dx = pos.x - gStartPos.x
+    const dy = pos.y - gStartPos.y
+
+    const selectedLine = gMeme.lines[gMeme.selectedLineIdx]
+    if (!selectedLine) return
+
+    selectedLine.x += dx
+    selectedLine.y += dy
+
+    gStartPos = pos
+    renderMeme()
+}
+
+
+function onUp() {
+    console.log(" onUp() TRIGGERED") // Debugging log
+
+    if (!gMeme.isDragging) return
+
+    gMeme.isDragging = false
+    gStartPos = { x: 0, y: 0 }
+
+    console.log(" isDragging after reset:", gMeme.isDragging)
 }
 
 function onChangeFont(font) {
@@ -388,5 +432,42 @@ function onDeleteLine() {
         gMeme.selectedLineIdx = 0
     }
 
+    renderMeme()
+}
+
+function onSelectSticker(emoji) {
+    if (!emoji) return
+
+    onAddSticker(emoji)
+
+    // Reset the dropdown back to default
+    document.getElementById('sticker-select').value = ''
+}
+
+function onAddSticker(emoji) {
+
+    let x = gElCanvas.width / 2
+    let y = gElCanvas.height / 2
+    const margin = 10
+
+    // Ensure the sticker appears within the visible canvas area
+    if (x < margin) x = margin
+    else if (x > gElCanvas.width - margin) x = gElCanvas.width - margin
+
+    if (y < margin) y = margin
+    else if (y > gElCanvas.height - margin) y = gElCanvas.height - margin
+
+    gMeme.lines.push({
+        txt: emoji,
+        size: 40,
+        color: 'black', // color doesn't matter for emoji
+        x,
+        y,
+        width: 0,
+        height: 0,
+        isSticker: true
+    })
+
+    gMeme.selectedLineIdx = gMeme.lines.length - 1
     renderMeme()
 }

@@ -11,6 +11,7 @@ body {
     color: #333;
     line-height: 1.6;
     padding-bottom: 40px;
+    min-height: 100vh;
 }
 
 /* Flexbox for the header */
@@ -170,6 +171,7 @@ main {
     grid-column: 1 / -1;
     grid-row: 1;
     padding: 8px;
+    width: 100%;
     border: 1px solid #ccc;
     border-radius: 4px;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -329,6 +331,13 @@ main {
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0,0,0,0.2);
     background: linear-gradient(45deg, #d35400, #e67e22);
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px; 
+    align-items: center;
 }
 
 /* Optional: Responsive adjustments for tablet devices */

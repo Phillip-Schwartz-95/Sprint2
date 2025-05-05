@@ -26,6 +26,7 @@ var gMeme = {
     selectedLineIdx: 0,
     selectedFont: 'Arial',
     textAlign: 'center',
+    isDragging: false,
     lines: [
         {
             txt: 'Your Meme Text Here',
@@ -34,7 +35,8 @@ var gMeme = {
             x: 200,  
             y: 50,   
             width: 0,  // These will be calculated
-            height: 0  // during rendering
+            height: 0,  // during rendering
+            isSticker: false
         }
     ]
 }
@@ -103,6 +105,5 @@ function getEvPos(ev) {
         }
     }
 
-    console.log(`getEvPos - X: ${pos.x}, Y: ${pos.y}`)
     return pos
 }
