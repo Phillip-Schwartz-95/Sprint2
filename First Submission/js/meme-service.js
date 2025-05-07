@@ -42,7 +42,9 @@ var gMeme = {
 }
 
 
-var gKeywordSearchCountMap = { 'funny': 1, 'cute': 2, 'baby': 1 }
+var gKeywordSearchCountMap = { 'funny': 12, 'cute': 7, 'trump': 1, 'baby': 1, 'puppies': 1, 'kitten': 1, 
+    'dumb': 1, 'wonka': 1, 'obama': 1, 'kissing': 1, 'random': 1, 'cheers': 1, 'gatsby': 1, 'matrix': 1, 
+    'lotr': 1, 'star trek': 1, 'political': 1, 'putin': 1, 'toy story': 1 }
 
 // Find the image in the gImgs array for the render function
 function getImageById(imgId) {

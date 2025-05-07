@@ -88,27 +88,56 @@ main {
     padding: 0 20px;
 }
 
-.btn-random, 
+.gallery-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 1em;
+}
+
+.left-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.right-actions input[type="text"] {
+    padding: 6px 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.btn-random,
 .btn-upload {
     display: inline-block;
     margin: 20px 0;
-    background: linear-gradient(45deg, #3498db, #0b72b6);   
-    color: #fff;                 
-    padding: 10px 20px;          
-    border-radius: 3px;          
-    text-align: center;          
-    font-size: 1rem;             
-    text-decoration: none;       
-    border: none;                
-    cursor: pointer;             
+    background: linear-gradient(45deg, #3498db, #0b72b6);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 3px;
+    text-align: center;
+    font-size: 1rem;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-random:hover, 
+.btn-random:hover,
 .btn-upload:hover {
     background: linear-gradient(45deg, #2980b9, #3498db);
     transform: translateY(-2px);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+#search-input {
+    padding: 6px;
+    font-size: 16px;
+    margin-right: 10px;
+    width: 200px;
 }
 
 .gallery-container {
@@ -118,7 +147,7 @@ main {
     margin: 0 auto;
     padding: 0 20px;
     grid-gap: 20px;
-    
+
 }
 
 .gallery-container img {
@@ -149,7 +178,7 @@ main {
     border: 1px solid #bdc3c7;
     border-radius: 8px;
     background: #ecf0f1
-    /* Height set dynamically or as needed */
+        /* Height set dynamically or as needed */
 }
 
 /* Right-side controls grid: now with 5 rows */
@@ -209,8 +238,10 @@ main {
 }
 
 #font-size-meter {
-    -webkit-appearance: none; /* Remove default appearance (Chrome, Safari) */
-    -moz-appearance: none;    /* Remove default appearance (Firefox) */
+    -webkit-appearance: none;
+    /* Remove default appearance (Chrome, Safari) */
+    -moz-appearance: none;
+    /* Remove default appearance (Firefox) */
     width: 100%;
     height: 6px;
     background: #ddd;
@@ -218,10 +249,10 @@ main {
     border-radius: 5px;
     margin: 10px 0;
     cursor: pointer;
-  }
-  
-  /* Slider thumb for WebKit browsers (Chrome, Safari) */
-  #font-size-meter::-webkit-slider-thumb {
+}
+
+/* Slider thumb for WebKit browsers (Chrome, Safari) */
+#font-size-meter::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
     width: 20px;
@@ -230,7 +261,7 @@ main {
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s ease;
-  }
+}
 
 /* Row 4: New controls for font family and alignment */
 .editor-controls .controls {
@@ -259,14 +290,15 @@ main {
     color: #333;
     cursor: pointer;
     transition: border-color 0.3s ease;
-    appearance: none;       /* Remove default dropdown arrow if needed */
+    appearance: none;
+    /* Remove default dropdown arrow if needed */
     -webkit-appearance: none;
     -moz-appearance: none;
     background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D'10'%20height%3D'5'%20viewBox%3D'0%200%2010%205'%20xmlns%3D'http%3A//www.w3.org/2000/svg'%3E%3Cpolygon%20points%3D'0,0%205,5%2010,0'%20fill%3D'%23999'%20/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 10px center;
     background-size: 10px 5px;
-  }
+}
 
 /* Nested grid: alignment controls row */
 .editor-controls .align-control {
@@ -288,7 +320,7 @@ main {
 .align-control button:hover {
     background: #f0f0f0;
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
 /* Row 5: Action buttons */
@@ -329,14 +361,14 @@ main {
 .editor-controls button:hover,
 .editor-controls a:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     background: linear-gradient(45deg, #d35400, #e67e22);
 }
 
 .action-buttons {
     display: flex;
     flex-direction: row;
-    gap: 10px; 
+    gap: 10px;
     align-items: center;
 }
 
