@@ -9,7 +9,7 @@ function onInit() {
     gElCanvas = document.querySelector('.meme-canvas')
     gCtx = gElCanvas.getContext('2d')
 
-    const imgObj = getImageById(gMeme.selectedImgId);
+    const imgObj = getImageById(gMeme.selectedImgId)
     if (!imgObj) {
         renderGallery()
         renderMeme()
@@ -121,15 +121,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
-function onDownloadMeme(elLink) {
-    const imgContent = gElCanvas.toDataURL('image/jpeg') // Convert canvas to image URL
-    elLink.href = imgContent // Set the href of the link to the image URL
-    elLink.download = "meme.jpg" //download attribute
-}
-
 function onSetColor() {
-    const colorInput = document.querySelector('.text-color-picker').value
-    setColor(colorInput)
+    const color = document.querySelector('.text-color-picker').value
+    setColor(color)
 
     //change font color without re-rendering image
     const meme = getMeme()
@@ -196,54 +190,22 @@ function updateEditor(line) {
     document.querySelector('#font-size-meter').value = line.size
 }
 
-
 function onCanvasClick(ev) {
-    ev.preventDefault() // Prevent any default behavior
+    ev.preventDefault()
 
     const pos = getEvPos(ev)
+    const clickedLineIdx = getClickedLineIdx(pos)
 
-
-    let isLineClicked = false
-
-    gMeme.lines.forEach((line, idx) => {
-        // Set font size so measurements are accurate.
-        gCtx.font = `${line.size}px Arial`
-        const textMetrics = gCtx.measureText(line.txt)
-
-        // Use line.size for approx text height
-        const textHeight = line.size
-        const textWidth = textMetrics.width
-
-        // Calculate the clickable area with padding
-        const padding = 10
-        const bounds = {
-            left: line.x - (textWidth / 2) - padding,
-            right: line.x + (textWidth / 2) + padding,
-            top: line.y - (textHeight / 2) - padding,
-            bottom: line.y + (textHeight / 2) + padding
-        }
-
-        console.log(`Checking line ${idx}:`, {
-            text: line.txt,
-            position: `(${line.x}, ${line.y})`,
-            bounds: bounds,
-            clickPos: pos
-        })
-
-        if (pos.x >= bounds.left && pos.x <= bounds.right &&
-            pos.y >= bounds.top && pos.y <= bounds.bottom) {
-
-            gMeme.selectedLineIdx = idx
-            gMeme.isDragging = true // dragging
-            gStartPos = pos
-            isLineClicked = true
-        }
-    })
-    if (!isLineClicked) {
+    if (clickedLineIdx !== -1) {
+        gMeme.selectedLineIdx = clickedLineIdx
+        gMeme.isDragging = true
+        gStartPos = pos
+    } else {
         gMeme.selectedLineIdx = null
         gMeme.isDragging = false
     }
-    renderMeme() // to take away the border if clicked outside of line coordinates
+
+    renderMeme()
 }
 
 function onMove(ev) {
@@ -304,39 +266,6 @@ function onChangeAlignment(alignment) {
 
     console.log('Aligned to:', alignment)
     renderMeme()
-}
-
-function onSaveMeme() {
-    // Convert to a JPEG data URL.
-    const memeDataUrl = gElCanvas.toDataURL('image/jpeg')
-
-    // Retrieve the existing saved memes, or an empty array if none
-    let savedMemes = loadFromStorage('savedMemes') || []
-
-    // Add new meme's data URL to array
-    savedMemes.push(memeDataUrl)
-
-    // Save the updated array back to local storage using saveToStorage.
-    saveToStorage('savedMemes', savedMemes)
-
-    alert('Meme saved successfully')
-}
-
-function renderSavedMemes() {
-    const memesContainer = document.querySelector('.memes-container')
-    const savedMemes = loadFromStorage('savedMemes') || []
-
-    let htmlStr = ''
-
-    if (savedMemes.length === 0) {
-        htmlStr = '<p class="no-memes">No saved memes yet</p>'
-    } else {
-        savedMemes.forEach(memeDataUrl => {
-            htmlStr += `<img src="${memeDataUrl}" alt="Saved Meme" class="saved-meme">`
-        })
-    }
-
-    memesContainer.innerHTML = htmlStr
 }
 
 function showMemes() {
@@ -415,7 +344,7 @@ function onDeleteLine() {
     gMeme.lines.splice(gMeme.selectedLineIdx, 1)
 
     // Adjust the selected line index:
-    // If there are still lines remaining, ensure the index is correct.
+    
     if (gMeme.selectedLineIdx >= gMeme.lines.length) {
         gMeme.selectedLineIdx = gMeme.lines.length - 1
     }

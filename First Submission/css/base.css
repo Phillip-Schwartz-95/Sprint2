@@ -1,0 +1,16 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom right, #f2f2f2, #9249be);
+    color: #333;
+    line-height: 1.6;
+    padding-bottom: 40px;
+    min-height: 100vh;
+}
+
+/* Main layout: side-by-side on desktop */
+main {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    padding: 20px;
+}

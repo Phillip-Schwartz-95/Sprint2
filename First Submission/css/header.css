@@ -1,0 +1,41 @@
+/* Flexbox for the header */
+.main-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(45deg, #2c3e50, #235d97);
+    color: #ecf0f1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    padding: 1rem;
+    transition: box-shadow 0.3s ease;
+}
+
+/* Logo styling */
+.logo {
+    width: 80px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.05);
+}
+
+/* Navigation menu */
+.nav-links {
+    display: flex;
+    gap: 40px;
+    margin-inline-end: 55px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #e74c3c;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}

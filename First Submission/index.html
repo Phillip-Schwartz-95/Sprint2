@@ -10,7 +10,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/styles.css">
 
 </head>
 
@@ -130,13 +130,18 @@
                         <button class="btn-delete" onclick="onDeleteLine()">✖ Delete Selected Line</button>
                     </div>
                     <div class="action-buttons">
-                        <a class="btn-download" onclick="onDownloadMeme(this)" download="meme.jpg">
-                            <i class="fas fa-download"></i> Download Meme
-                        </a>
                         <button class="btn-save" onclick="onSaveMeme()">
-                            <i class="fa-solid fa-save"></i> Save Meme
+                            <i class="fa-solid fa-save"></i>
                         </button>
-                        <button class="btn-back" onclick="toggleEditor(false)">⬅️ Back to Gallery</button>
+                        <a class="btn-download" onclick="onDownloadMeme(this)" download="meme.jpg">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        <button class="btn-share" onclick="onShareMemeToFacebook()">
+                            <i class="fab fa-facebook"></i>
+                        </button>
+                        <button class="btn-share-email" onclick="onShareMemeToEmail()">
+                            <i class="fas fa-envelope"></i>
+                        </button>
                     </div>
                 </div>
 
@@ -151,11 +156,15 @@
         </section>
 
     </main>
-
-    <script src="js/main.js"></script>
+    <!-- utilities -->
+    <script src="js/util.js"></script>
+    <script src="js/share-download-save.js"></script>
+    <!-- controllers -->
     <script src="js/gallery-controller.js"></script>
-    <script src="js/meme-service.js"></script>
     <script src="js/meme-controller.js"></script>
+    <!-- services -->
+    <script src="js/meme-service.js"></script>
+
 
 </body>
 

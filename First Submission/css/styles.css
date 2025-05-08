@@ -1,0 +1,10 @@
+/* Import all styles */
+@import url('reset.css');
+@import url('base.css');
+@import url('header.css');
+@import url('gallery.css');
+@import url('meme-editor.css');
+@import url('display-hidden.css');
+
+/* import media queries */
+@import url('media-queries.css');

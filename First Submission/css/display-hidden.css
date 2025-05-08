@@ -1,0 +1,8 @@
+/* Hide and show sections dynamically */
+.hidden {
+    display: none;
+}
+
+.active {
+    display: block;
+}

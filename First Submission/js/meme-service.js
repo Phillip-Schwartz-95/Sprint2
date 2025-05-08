@@ -109,3 +109,21 @@ function getEvPos(ev) {
 
     return pos
 }
+
+function getClickedLineIdx(pos) {
+    return gMeme.lines.findIndex(line => {
+        gCtx.font = `${line.size}px Arial` // Set correct font size before measuring
+        const textWidth = gCtx.measureText(line.txt).width
+        const padding = 10
+
+        const bounds = {
+            left: line.x - (textWidth / 2) - padding,
+            right: line.x + (textWidth / 2) + padding,
+            top: line.y - (line.size / 2) - padding,
+            bottom: line.y + (line.size / 2) + padding
+        }
+
+        return pos.x >= bounds.left && pos.x <= bounds.right &&
+               pos.y >= bounds.top && pos.y <= bounds.bottom
+    })
+}
