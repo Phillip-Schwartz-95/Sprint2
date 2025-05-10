@@ -2,6 +2,40 @@
     .gallery-container {
         grid-template-columns: repeat(2, 240px);
     }
+
+    .gallery-actions {
+        flex-direction: column;  /* Stack the buttons and search bar vertically */
+        align-items: flex-start; 
+    }
+
+    .right-actions {
+        width: 100%;
+        margin-top: 10px; 
+    }
+
+    .right-actions input[type="text"] {
+        width: 100%; /* Make the search bar take up the full width */
+        padding: 10px 15px;
+        font-size: 18px; 
+    }
+
+    /* Make sure buttons maintain their size and don't stretch */
+    .left-actions {
+        width: 100%;
+        gap: 10px;
+    }
+
+    /* Adjust button styling for smaller screens */
+    .btn-random,
+    .btn-upload {
+        width: 100%; 
+        padding: 12px 20px;  
+        font-size: 1.1rem;  
+    }
+
+    .keyword {
+        font-size: 16px; 
+    }
 }
 
 /* Responsive adjustments for mobile*/

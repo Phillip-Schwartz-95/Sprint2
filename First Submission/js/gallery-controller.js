@@ -2,12 +2,50 @@
 
 function renderGallery() {
     document.querySelector('.user-memes').classList.add('hidden')
-    const imgs = getImgs() // images from memeService
+    const imgs = getImgs()
     const galleryContainer = document.querySelector('.gallery-container')
 
+    // Render gallery images
     galleryContainer.innerHTML = imgs.map(img => `
         <img src="${img.url}" onclick="onImgSelect(${img.id})">
     `).join('')
+
+    // Render the keywords
+    renderKeywords()
+}
+
+function renderKeywords() {
+    const keywordsContainer = document.querySelector('.keywords-container')
+    const keywordsMap = gKeywordSearchCountMap
+
+    let keywordsHTML = ''
+
+    for (let keyword in keywordsMap) {
+        const count = keywordsMap[keyword]
+        const fontSize = 12 + count * 2
+        keywordsHTML += `<span class="keyword" style="font-size:${fontSize}px" onclick="onKeywordClick('${keyword}')">${keyword}</span>`
+    }
+    
+    keywordsHTML = keywordsHTML.trim()
+
+    // render on gallery page
+    keywordsContainer.innerHTML = keywordsHTML
+    
+}
+
+function onKeywordClick(keyword) {
+    // Increase keyword popularity
+    if (gKeywordSearchCountMap[keyword]) {
+        gKeywordSearchCountMap[keyword]++
+    } else {
+        gKeywordSearchCountMap[keyword] = 1
+    }
+
+    // Re-render keywords with updated sizes
+    renderKeywords()
+
+    // Search the gallery
+    onSearchGallery(keyword)
 }
 
 function onSearchGallery(keyword) {

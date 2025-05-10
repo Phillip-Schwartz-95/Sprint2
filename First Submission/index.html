@@ -33,21 +33,24 @@
             <h2 class="section-title">Choose an Image</h2>
 
             <div class="gallery-actions">
+                <!-- Left Actions: Buttons -->
                 <div class="left-actions">
                     <button class="btn-random" onclick="onLoadRandomPicture()">Random Meme</button>
                     <label class="btn-upload" for="uploadImg">
                         <i class="fas fa-upload"></i> Upload Picture
                     </label>
-
-                    <input id="uploadImg" type="file" accept="image/*" onchange="onUploadPicture(event)"
-                        style="display: none;">
+                    <input id="uploadImg" type="file" accept="image/*" onchange="onUploadPicture(event)" style="display: none;">
                 </div>
-
+            
+                <!-- Right Actions: Search Bar -->
                 <div class="right-actions">
-                    <input type="text" id="search-input" placeholder="Search tags (e.g. funny, cute)"
-                        oninput="onSearchGallery(this.value)">
+                    <input type="text" id="search-input" placeholder="Search tags (e.g. funny, cute)" oninput="onSearchGallery(this.value)">
                 </div>
             </div>
+            
+            <!-- Keywords Container -->
+            <div class="keywords-container"></div>
+            
 
 
             <div class="gallery-container">

@@ -1,4 +1,4 @@
-/* Image Gallery (desktop default) */
+/* Default Gallery on Desktop screen */
 
 .section-title {
     font-size: 22px;
@@ -13,18 +13,25 @@
     padding: 0 20px;
 }
 
+/* (Buttons and Search) */
 .gallery-actions {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    justify-content: space-between;  /* Place buttons on the left and search on the right */
+    align-items: center; 
     margin-bottom: 1em;
 }
 
+/* (Random Meme, Upload Button) */
 .left-actions {
     display: flex;
-    gap: 10px;
-    align-items: center;
+    gap: 10px;  
+    align-items: center; 
+}
+
+.right-actions {
+    display: flex;
+    align-items: center;  
+    gap: 10px;  
 }
 
 .right-actions input[type="text"] {
@@ -38,7 +45,6 @@
 .btn-random,
 .btn-upload {
     display: inline-block;
-    margin: 20px 0;
     background: linear-gradient(45deg, #3498db, #0b72b6);
     color: #fff;
     padding: 10px 20px;
@@ -58,21 +64,36 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 }
 
-#search-input {
-    padding: 6px;
-    font-size: 16px;
-    margin-right: 10px;
-    width: 200px;
+.keywords-container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;  /* Allow keywords to wrap if needed */
+    justify-content: center;
+    align-items: center;  /* Center the keywords horizontally */
+    width: 90%;
+    margin: 25px 10px 20px 10px
+}
+
+.keyword {
+    cursor: pointer;
+    margin: 0 10px;
+    color: #333;
+    font-weight: bold;
+    transition: font-size 0.2s, color 0.2s;
+}
+
+.keyword:hover {
+    color: #ff6600;
+    font-size: 18px; 
 }
 
 .gallery-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 240px));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
     grid-gap: 20px;
-
 }
 
 .gallery-container img {
@@ -81,8 +102,13 @@
     object-fit: cover;
     border: 1px solid #161616a8;
     cursor: pointer;
+    transition: transform 0.3s ease;
+    border-radius: 9px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;  
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.77); 
 }
 
 .gallery-container img:hover {
     transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.77);
 }
