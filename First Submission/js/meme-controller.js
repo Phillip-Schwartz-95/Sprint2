@@ -402,3 +402,54 @@ function onAddSticker(emoji) {
     gMeme.selectedLineIdx = gMeme.lines.length - 1
     renderMeme()
 }
+
+// Function to render saved memes
+function renderSavedMemes() {
+    const memesContainer = document.querySelector('.saved-memes-container')
+    const savedMemes = loadFromStorage('savedMemes') || []
+
+    let htmlStr = ''
+
+    if (savedMemes.length === 0) {
+        htmlStr = '<p class="no-memes">No saved memes yet</p>'
+    } else {
+        savedMemes.forEach(memeDataUrl => {
+            htmlStr += `<img src="${memeDataUrl}" alt="Saved Meme" class="saved-meme" onclick="openEditorWithSavedImage('${memeDataUrl}')">`
+        })
+    }
+
+    memesContainer.innerHTML = htmlStr
+}
+
+
+function openEditorWithSavedImage(imageSrc) {
+    const img = new Image()
+    img.src = imageSrc
+
+    img.onload = function () {
+        const canvasWidth = 400
+        const canvasHeight = (img.naturalHeight * canvasWidth) / img.naturalWidth
+        gElCanvas.width = canvasWidth
+        gElCanvas.height = canvasHeight
+
+        gCtx.clearRect(0, 0, gElCanvas.width, gElCanvas.height)
+        gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
+
+        // Update gMeme with the new uploaded image
+        gMeme.selectedImgId = null
+        gMeme.selectedImgUrl = imageSrc
+        gMeme.lines = [{
+            txt: 'Your Meme Text Here',
+            size: 30,
+            color: 'white',
+            x: 200,
+            y: 50,
+            width: 0,
+            height: 0
+        }]
+        gMeme.selectedLineIdx = 0
+
+        toggleEditor(true)
+        renderMeme()
+    }
+}

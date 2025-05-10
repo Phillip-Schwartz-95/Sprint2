@@ -63,20 +63,3 @@ function onSaveMeme() {
 
     alert('Meme saved successfully')
 }
-
-function renderSavedMemes() {
-    const memesContainer = document.querySelector('.memes-container')
-    const savedMemes = loadFromStorage('savedMemes') || []
-
-    let htmlStr = ''
-
-    if (savedMemes.length === 0) {
-        htmlStr = '<p class="no-memes">No saved memes yet</p>'
-    } else {
-        savedMemes.forEach(memeDataUrl => {
-            htmlStr += `<img src="${memeDataUrl}" alt="Saved Meme" class="saved-meme">`
-        })
-    }
-
-    memesContainer.innerHTML = htmlStr
-}
